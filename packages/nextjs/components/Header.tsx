@@ -1,0 +1,145 @@
+"use client";
+
+import React, { useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { hardhat } from "viem/chains";
+import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
+
+type HeaderMenuLink = {
+  label: string;
+  href: string;
+  icon?: React.ReactNode;
+  subItems?: { label: string; href: string }[];
+};
+
+export const menuLinks: HeaderMenuLink[] = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "梗圖模板展览馆",
+    href: "/gallery",
+  },
+  {
+    label: "上載圖片去 Arweave",
+    href: "https://up2ar.xyz/",
+  },
+  {
+    label: "访问原版",
+    href: "https://x.magiconch.com/",
+  },
+  // {
+  //   label: "Debug Contracts",
+  //   href: "/debug",
+  //   icon: <BugAntIcon className="h-4 w-4" />,
+  // },
+];
+
+export const HeaderMenuLinks = () => {
+  const pathname = usePathname();
+
+  return (
+    <>
+      {menuLinks.map(({ label, href, icon, subItems }) => {
+        const isActive = pathname === href;
+        
+        if (subItems) {
+          return (
+            <li key={href} className="dropdown dropdown-hover">
+              <label tabIndex={0} className="hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col cursor-pointer items-center">
+                {icon}
+                <span>{label}</span>
+                <ChevronDownIcon className="h-4 w-4" />
+              </label>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow-lg bg-base-200 rounded-box w-52 !top-[100%] !mt-0 !pt-0 !-translate-y-1">
+                {subItems.map((item) => (
+                  <li key={item.href}>
+                    <Link 
+                      href={item.href} 
+                      target={item.href.startsWith('http') ? "_blank" : undefined}
+                      rel={item.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                      className="py-2 hover:bg-base-300"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          );
+        }
+
+        return (
+          <li key={href}>
+            <Link
+              href={href}
+              passHref
+              target={href.startsWith('http') ? "_blank" : undefined}
+              rel={href.startsWith('http') ? "noopener noreferrer" : undefined}
+              className={`${
+                isActive ? "bg-secondary shadow-md" : ""
+              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+            >
+              {icon}
+              <span>{label}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </>
+  );
+};
+
+/**
+ * Site header
+ */
+export const Header = () => {
+  const { targetNetwork } = useTargetNetwork();
+  const isLocalNetwork = targetNetwork.id === hardhat.id;
+
+  const burgerMenuRef = useRef<HTMLDetailsElement>(null);
+  useOutsideClick(burgerMenuRef, () => {
+    burgerMenuRef?.current?.removeAttribute("open");
+  });
+
+  return (
+    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
+      <div className="navbar-start w-auto lg:w-1/2">
+        <details className="dropdown" ref={burgerMenuRef}>
+          <summary className="ml-1 btn btn-ghost lg:hidden hover:bg-transparent">
+            <Bars3Icon className="h-1/2" />
+          </summary>
+          <ul
+            className="menu menu-compact dropdown-content mt-3 p-2 shadow-sm bg-base-100 rounded-box w-52"
+            onClick={() => {
+              burgerMenuRef?.current?.removeAttribute("open");
+            }}
+          >
+            <HeaderMenuLinks />
+          </ul>
+        </details>
+        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
+          <div className="flex relative w-10 h-10">
+            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-bold leading-tight">粤语梗图生成器</span>
+            <span className="text-xs">一齊嚟玩梗？</span>
+          </div>
+        </Link>
+        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
+          <HeaderMenuLinks />
+        </ul>
+      </div>
+      <div className="navbar-end grow mr-4">
+        <RainbowKitCustomConnectButton />
+        {isLocalNetwork && <FaucetButton />}
+      </div>
+    </div>
+  );
+};

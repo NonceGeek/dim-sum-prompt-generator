@@ -22,22 +22,13 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
   },
   {
-    label: "梗圖模板展览馆",
-    href: "/gallery",
+    label: "Prompt 模板库",
+    href: "/gallery#TODO",
   },
   {
-    label: "上載圖片去 Arweave",
-    href: "https://up2ar.xyz/",
+    label: "Dim Sum 粤语语料库！",
+    href: "https://search.aidimsum.com",
   },
-  {
-    label: "访问原版",
-    href: "https://x.magiconch.com/",
-  },
-  // {
-  //   label: "Debug Contracts",
-  //   href: "/debug",
-  //   icon: <BugAntIcon className="h-4 w-4" />,
-  // },
 ];
 
 export const HeaderMenuLinks = () => {
@@ -128,8 +119,8 @@ export const Header = () => {
             <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">粤语梗图生成器</span>
-            <span className="text-xs">一齊嚟玩梗？</span>
+            <span className="font-bold leading-tight">Dim Sum Prompt Generator</span>
+            <span className="text-xs">从语料到 Prompt！</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">

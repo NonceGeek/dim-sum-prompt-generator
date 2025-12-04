@@ -5,8 +5,8 @@ import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
 export const metadata = getMetadata({
-  title: "粤语梗图生成器",
-  description: "Cantonese Meme Generator",
+  title: "Dim Sum Prompt Generator",
+  description: "从语料到 Prompt！",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {

@@ -76,10 +76,10 @@ yarn start
 
 1. 通过 URL 参数 `unique_id` 加载特定语料：
    ```
-   http://localhost:3000?unique_id=your-unique-id
+   https://prompt-generator.app.aidimsum.com?unique_id=your-unique-id
    ```
 
-2. 默认会加载示例语料（`6e29005d-31ed-42d6-be17-baab39b07fa1`）
+2. **默认语料**: 如果 URL 中没有提供 `unique_id` 参数，应用会自动加载默认示例语料（`6e29005d-31ed-42d6-be17-baab39b07fa1`）。这个默认值在代码中定义，确保用户首次访问时就能看到示例数据。
 
 ### 选择 Prompt 模板
 
